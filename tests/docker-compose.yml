@@ -1,0 +1,10 @@
+version: "3"
+services:
+  hello:
+    image: strm/helloworld-http
+    ports:
+      - "80"
+  hello2:
+    image: strm/helloworld-http
+    ports:
+      - "80"

@@ -1,0 +1,8 @@
+/v/
+.gradle/
+*.py[co]
+*.egg
+*.egg-info
+.DS\_Store
+.cache/
+__pycache__/
