@@ -51,9 +51,11 @@ we want to be able to start in the tests::
         dsn = "{docker_services.docker_ip}:{public_port}".format(**locals())
         return dsn
 
-In many cases you will want to override the location for the docker compose
-files. Just overwrite the ``docker_compose_files`` fixture in your
-``conftest.py`` file::
+By default the fixture will look for the ``docker-compose.yml`` file in the
+``tests`` subfolder of the path where ``pytest.ini`` resides (or the project's
+root directory if no ini file is given - as in the tests example). In many
+cases you will want to override the location for the docker compose files. Just
+overwrite the ``docker_compose_files`` fixture in your ``conftest.py`` file::
 
     @pytest.fixture(scope='session')
     def docker_compose_files(pytestconfig):
