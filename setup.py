@@ -30,7 +30,7 @@ setup(
     ],
     author='Lovely Systems',
     author_email='office@lovelysystems.com',
-    url='https://github.com/lovelysystems/lovely-ws-status',
+    url='https://github.com/lovelysystems/lovely-pytest-docker',
     keywords='pytest testing docker compose',
     namespace_packages=['lovely'],
     packages=find_packages('src'),
