@@ -9,8 +9,13 @@ from urllib.request import urlopen
 from urllib.error import URLError
 
 
-def check_url(url):
-    """Check if an URL is reachable."""
+def check_url(docker_ip, public_port):
+    """Check if a service is reachable.
+
+    Makes a simple GET request to '/' of the HTTP endpoint. Service is
+    available if returned status code is < 500.
+    """
+    url = 'http://{}:{}'.format(docker_ip, public_port)
     try:
         r = urlopen(url)
         return r.status < 500
@@ -26,7 +31,9 @@ def execute(command, success_codes=(0,)):
     """Run a shell command."""
     try:
         output = subprocess.check_output(
-            command, stderr=subprocess.STDOUT, shell=True,
+            command,
+            stderr=subprocess.STDOUT,
+            shell=False,
         )
         status = 0
     except subprocess.CalledProcessError as error:
@@ -60,26 +67,37 @@ class Services(object):
 
         :param services: the names of the services as defined in compose file
         """
-        self._docker_compose.execute('up --build -d ' + ' '.join(services))
+        self._docker_compose.execute('up', '--build', '-d', *services)
 
-    def wait_for_service(self, service, private_port):
+    def exec(self, service, *cmd):
+        """Execute a command inside a docker container.
+
+        :param service: the name of the service as defined in compose file
+        :param cmd: list of command parts to execute
+        """
+        return self._docker_compose.execute('exec', '-T', service, *cmd)
+
+    def wait_for_service(self, service, private_port, check_server=check_url):
         """
         Waits for the given service to response to a http GET.
 
         :param service: the service name as defined in the docker compose file
         :param private_port: the private port as defined in docker compose file
+        :param check_server: optional function to check if the server is ready
+                             (default check method makes GET request to '/'
+                              of HTTP endpoint)
         :return: the public port of the service exposed to host system if any
         """
         public_port = self.port_for(service, private_port)
         self.wait_until_responsive(
-            timeout=30.0, pause=0.1,
-            check=lambda: check_url('http://%s:%s' % (
-                self.docker_ip, public_port)),
+            timeout=30.0,
+            pause=0.1,
+            check=lambda: check_server(self.docker_ip, public_port),
         )
         return public_port
 
     def shutdown(self):
-        self._docker_compose.execute('down -v')
+        self._docker_compose.execute('down', '-v')
 
     def port_for(self, service, port):
         """Get the effective bind port for a service."""
@@ -90,7 +108,7 @@ class Services(object):
             return cache
 
         output = self._docker_compose.execute(
-            'port %s %d' % (service, port,)
+            'port', service, str(port)
         )
         endpoint = output.strip()
         if not endpoint:
@@ -129,11 +147,14 @@ class DockerComposeExecutor(object):
         self._compose_files = compose_files
         self._project_name = project_name
 
-    def execute(self, subcommand):
-        command = "docker-compose"
+    def execute(self, *subcommand):
+        command = ["docker-compose"]
         for compose_file in self._compose_files:
-            command += ' -f "{}"'.format(compose_file)
-        command += ' -p "{}" {}'.format(self._project_name, subcommand)
+            command.append('-f')
+            command.append(compose_file)
+        command.append('-p')
+        command.append(self._project_name)
+        command += subcommand
         return execute(command)
 
 
