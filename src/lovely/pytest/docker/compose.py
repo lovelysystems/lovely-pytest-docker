@@ -6,6 +6,7 @@ import time
 import timeit
 
 from urllib.request import urlopen
+from urllib.error import HTTPError
 
 
 def check_url(docker_ip, public_port):
@@ -18,6 +19,9 @@ def check_url(docker_ip, public_port):
     try:
         r = urlopen(url)
         return r.status < 500
+    except HTTPError as e:
+        # If service returns e.g. a 404 it's ok
+        return e.code < 500
     except Exception:
         # Possible service not yet started
         return False
