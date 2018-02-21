@@ -5,6 +5,9 @@ Changes for Lovely Pytest Docker
 unreleased
 ==========
 
+2018/01/21 0.0.3
+================
+
  - fixed wrong error handling when polling for docker up state
 
 2018/01/10 0.0.2
