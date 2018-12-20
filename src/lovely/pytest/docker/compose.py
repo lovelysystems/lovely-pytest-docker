@@ -1,12 +1,12 @@
+import time
+
 import os
 import pytest
 import re
 import subprocess
-import time
 import timeit
-
-from urllib.request import urlopen
 from urllib.error import HTTPError
+from urllib.request import urlopen
 
 
 def check_url(docker_ip, public_port):
@@ -55,12 +55,12 @@ class Services(object):
     https://github.com/AndreLouisCaron/pytest-docker
     """
 
-    def __init__(self, compose_files, project_name='pytest'):
+    def __init__(self, compose_files, docker_ip, project_name='pytest'):
         self._docker_compose = DockerComposeExecutor(
             compose_files, project_name
         )
         self._services = {}
-        self.docker_ip = docker_ip()
+        self.docker_ip = docker_ip
 
     def start(self, *services):
         """Ensures that the given services are started via docker compose.
@@ -158,6 +158,7 @@ class DockerComposeExecutor(object):
         return execute(command)
 
 
+@pytest.fixture(scope='session')
 def docker_ip():
     """Determine IP address for TCP connections to Docker containers."""
 
@@ -186,14 +187,14 @@ def docker_compose_files(pytestconfig):
 
 
 @pytest.fixture(scope='session')
-def docker_services(request, pytestconfig, docker_compose_files):
+def docker_services(request, pytestconfig, docker_compose_files, docker_ip):
     """Provide the docker services as a pytest fixture.
 
     The services will be stopped after all tests are run.
     """
     keep_alive = request.config.getoption("--keepalive", False)
     project_name = "pytest{}".format(str(pytestconfig.rootdir))
-    services = Services(docker_compose_files, project_name)
+    services = Services(docker_compose_files, docker_ip, project_name)
     yield services
     if not keep_alive:
         services.shutdown()

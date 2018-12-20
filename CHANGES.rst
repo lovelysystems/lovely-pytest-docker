@@ -5,6 +5,8 @@ Changes for Lovely Pytest Docker
 unreleased
 ==========
 
+ - make docker_ip a fixture to make it possible to override it per project
+
 2018/01/21 0.0.3
 ================
 
