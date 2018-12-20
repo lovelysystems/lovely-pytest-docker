@@ -1,6 +1,3 @@
-import org.gradle.api.tasks.Exec
-import org.gradle.kotlin.dsl.*
-
 repositories {
     jcenter()
 }
@@ -52,8 +49,4 @@ tasks {
         }
     }
 
-}
-
-task(name = "wrapper", type = Wrapper::class) {
-    gradleVersion = "4.4.1"
 }
