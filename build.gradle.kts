@@ -1,9 +1,10 @@
-repositories {
-    jcenter()
-}
-
 plugins {
     base
+    id("com.lovelysystems.gradle") version ("1.1.0")
+}
+
+lovely {
+    gitProject()
 }
 
 tasks {
