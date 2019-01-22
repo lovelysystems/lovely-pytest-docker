@@ -11,12 +11,9 @@ requires = [
 
 
 def get_version():
-    p = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                     "src", "lovely", "pytest", "docker", "__init__.py")
-    ns = {}
+    p = os.path.join(os.path.dirname(os.path.abspath(__file__)), "VERSION.txt")
     with open(p) as f:
-        exec(f.read(), ns)
-    return ns['__version__']
+        return f.read().strip()
 
 
 setup(

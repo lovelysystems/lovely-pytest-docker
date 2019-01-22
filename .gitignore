@@ -8,4 +8,5 @@
 __pycache__/
 .idea/
 *.iml
-/dist/
+/build/
+VERSION.txt
