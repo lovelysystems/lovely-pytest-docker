@@ -26,7 +26,7 @@ setup(
     long_description=readme,
     classifiers=[
         "Programming Language :: Python :: 3",
-        "Framework :: Pyramid",
+        "Programming Language :: Python :: 2.7",
     ],
     author='Lovely Systems',
     author_email='office@lovelysystems.com',

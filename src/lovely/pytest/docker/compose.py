@@ -5,8 +5,8 @@ import pytest
 import re
 import subprocess
 import timeit
-from urllib.error import HTTPError
-from urllib.request import urlopen
+from six.moves.urllib.error import HTTPError
+from six.moves.urllib.request import urlopen
 
 
 def check_url(docker_ip, public_port):
@@ -18,7 +18,7 @@ def check_url(docker_ip, public_port):
     url = 'http://{}:{}'.format(docker_ip, public_port)
     try:
         r = urlopen(url)
-        return r.status < 500
+        return r.code < 500
     except HTTPError as e:
         # If service returns e.g. a 404 it's ok
         return e.code < 500
@@ -69,7 +69,7 @@ class Services(object):
         """
         self._docker_compose.execute('up', '--build', '-d', *services)
 
-    def exec(self, service, *cmd):
+    def execute(self, service, *cmd):
         """Execute a command inside a docker container.
 
         :param service: the name of the service as defined in compose file

@@ -2,6 +2,11 @@
 Changes for Lovely Pytest Docker
 ================================
 
+unreleased
+==========
+
+ - python 2 runtime compatibility
+
 2018/12/20 0.0.4
 ================
 
