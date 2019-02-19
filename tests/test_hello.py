@@ -21,12 +21,12 @@ def test_single_container(docker_hello_world, docker_services):
     assert 'hello2' not in res
 
 
-def test_exec(docker_services):
+def test_execute(docker_services):
     """Test the exec method.
 
     The exec method executes a command inside a docker command.
     """
-    res = docker_services.exec('hello', 'ls', '-a')
+    res = docker_services.execute('hello', 'ls', '-a')
     assert res == '.\n..\nindex.html\n'
 
 
