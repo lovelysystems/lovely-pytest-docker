@@ -1,4 +1,4 @@
-from urllib.request import urlopen
+from six.moves.urllib.request import urlopen
 
 
 def test_hello_world(docker_hello_world):

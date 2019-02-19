@@ -2,6 +2,16 @@
 Lovely Pytest Docker
 ====================
 
+.. image:: https://img.shields.io/pypi/v/lovely-pytest-docker.svg
+    :target: https://pypi.org/project/lovely-pytest-docker/
+
+.. image:: https://img.shields.io/pypi/pyversions/lovely-pytest-docker.svg
+    :target: https://pypi.org/project/lovely-pytest-docker/
+
+.. image:: https://travis-ci.com/lovelysystems/lovely-pytest-docker.svg?branch=master
+    :target: https://travis-ci.com/lovelysystems/lovely-pytest-docker
+
+
 Create simple Pytest_ fixtures for writing integration tests based on Docker
 containers. The framework provides a service class to start and stop containers
 based Docker Compose. Each single container can be started individually.
