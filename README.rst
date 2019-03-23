@@ -92,12 +92,12 @@ Execution in Docker Container
 =============================
 
 It's possible to execute a command inside one of the Docker containers. Use
-the ``exec`` method of the ``docker_services`` fixture::
+the ``execute`` method of the ``docker_services`` fixture::
 
-    def test_exec(docker_services):
+    def test_execute(docker_services):
         # the first argument is the service name of the compose file,
         # the following arguments build the command to run
-        res = docker_services.exec('crate', 'ls', '-a')
+        res = docker_services.execute('crate', 'ls', '-a')
 
 
 Wait for Service
