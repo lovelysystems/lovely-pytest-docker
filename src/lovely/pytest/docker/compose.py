@@ -1,6 +1,7 @@
 import time
 
 import os
+import platform
 import pytest
 import re
 import subprocess
@@ -148,7 +149,21 @@ class DockerComposeExecutor(object):
         self._project_name = project_name
 
     def execute(self, *subcommand):
-        command = ["docker-compose"]
+        # if the system is WSL, the platform string will look
+        # like Linux-4.4.0-18362-Microsoft-x86_64-with-debian-buster-sid
+        # if the system is windows, the platform string will
+        # look like Windows-10-10.0.18362-SP0
+        # Remember that if you are running on wsl, you should 
+        # follow the readme to setup a separate path/to/docker-compose.yml
+        # that will work for docker-compose.exe. You can do this with a 
+        # relative path.
+        p = platform.platform()
+        is_wsl = p.startswith('Linux') and 'Microsoft' in p
+        is_windows = p.startswith('Windows')
+        if is_wsl or is_windows:
+            command = [ 'docker-compose.exe' ]
+        else:
+            command = [ "docker-compose" ]        
         for compose_file in self._compose_files:
             command.append('-f')
             command.append(compose_file)
