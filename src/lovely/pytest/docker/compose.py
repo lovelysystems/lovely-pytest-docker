@@ -1,10 +1,10 @@
-import time
-
 import os
-import pytest
 import re
 import subprocess
+import time
 import timeit
+
+import pytest
 from six.moves.urllib.error import HTTPError
 from six.moves.urllib.request import urlopen
 
@@ -187,14 +187,23 @@ def docker_compose_files(pytestconfig):
 
 
 @pytest.fixture(scope='session')
-def docker_services(request, pytestconfig, docker_compose_files, docker_ip):
+def docker_services_project_name(pytestconfig):
+    project_name = "pytest{}".format(str(pytestconfig.rootdir))
+    return project_name
+
+
+@pytest.fixture(scope='session')
+def docker_services(request, docker_compose_files, docker_ip, docker_services_project_name):
     """Provide the docker services as a pytest fixture.
 
     The services will be stopped after all tests are run.
     """
     keep_alive = request.config.getoption("--keepalive", False)
-    project_name = "pytest{}".format(str(pytestconfig.rootdir))
-    services = Services(docker_compose_files, docker_ip, project_name)
+    services = Services(
+        docker_compose_files,
+        docker_ip,
+        docker_services_project_name
+    )
     yield services
     if not keep_alive:
         services.shutdown()

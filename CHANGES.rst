@@ -2,6 +2,12 @@
 Changes for Lovely Pytest Docker
 ================================
 
+Unreleased
+==========
+
+ - added ``docker_services_project_name`` fixture in order to override the container
+   name prefix for started services.
+
 2019/01/22 0.0.5
 ================
 

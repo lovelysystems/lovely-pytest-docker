@@ -47,3 +47,12 @@ def test_custom_checker(docker_services):
 
     docker_services.wait_for_service("hello", 80, check_server=custom_checker)
     assert custom_checker_called > 1
+
+
+def test_custom_docker_service_project_name(docker_hello_world, docker_services):
+    """Test a custom project name for docker services.
+
+    Project name can be defined as fixture in conftest.py
+    """
+    res = docker_services._docker_compose.execute("ps")
+    assert 'lovely-pytest-docker' in res

@@ -25,3 +25,8 @@ def docker_hello_world2(docker_services):
     public_port = docker_services.wait_for_service("hello2", 80)
     url = "http://{docker_services.docker_ip}:{public_port}".format(**locals())
     return url
+
+
+@pytest.fixture(scope='session')
+def docker_services_project_name():
+    return "lovely-pytest-docker"
