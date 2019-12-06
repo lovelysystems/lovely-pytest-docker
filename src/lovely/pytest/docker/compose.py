@@ -55,9 +55,9 @@ class Services(object):
     https://github.com/AndreLouisCaron/pytest-docker
     """
 
-    def __init__(self, compose_files, docker_ip, project_name='pytest'):
+    def __init__(self, compose_files, docker_ip, project_name='pytest', compose_command='docker-compose'):
         self._docker_compose = DockerComposeExecutor(
-            compose_files, project_name
+            compose_command, compose_files, project_name
         )
         self._services = {}
         self.docker_ip = docker_ip
@@ -143,12 +143,13 @@ class Services(object):
 
 
 class DockerComposeExecutor(object):
-    def __init__(self, compose_files, project_name):
+    def __init__(self, compose_command, compose_files, project_name):
+        self.compose_command = compose_command
         self._compose_files = compose_files
         self._project_name = project_name
 
     def execute(self, *subcommand):
-        command = ["docker-compose"]
+        command = [self.compose_command]
         for compose_file in self._compose_files:
             command.append('-f')
             command.append(compose_file)
@@ -193,7 +194,12 @@ def docker_services_project_name(pytestconfig):
 
 
 @pytest.fixture(scope='session')
-def docker_services(request, docker_compose_files, docker_ip, docker_services_project_name):
+def docker_compose_command():
+    return "docker-compose"
+
+
+@pytest.fixture(scope='session')
+def docker_services(request, docker_compose_command, docker_compose_files, docker_ip, docker_services_project_name):
     """Provide the docker services as a pytest fixture.
 
     The services will be stopped after all tests are run.
@@ -202,7 +208,8 @@ def docker_services(request, docker_compose_files, docker_ip, docker_services_pr
     services = Services(
         docker_compose_files,
         docker_ip,
-        docker_services_project_name
+        project_name=docker_services_project_name,
+        compose_command=docker_compose_command
     )
     yield services
     if not keep_alive:
