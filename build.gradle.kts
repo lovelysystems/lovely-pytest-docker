@@ -24,10 +24,10 @@ val venv by tasks.creating {
             commandLine("python3", "-m", "venv", "--clear", envDir)
         }
         exec {
-            commandLine(pip, "install", "--upgrade", "pip==9.0.1")
+            commandLine(pip, "install", "--upgrade", "pip==19.3.1")
         }
         exec {
-            commandLine(pip, "install", "pip-tools==1.10.1")
+            commandLine(pip, "install", "pip-tools==4.3.0")
         }
     }
 }
@@ -36,7 +36,7 @@ val testenv by tasks.creating {
     dependsOn(venv)
     doLast {
         exec {
-            commandLine("v/bin/pip-sync", "requirements.txt")
+            commandLine("v/bin/pip-sync", "requirements-dev.txt")
         }
         exec {
             commandLine("v/bin/pip", "install", "-e", projectDir)
