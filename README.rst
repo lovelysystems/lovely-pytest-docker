@@ -130,10 +130,19 @@ parameter to the ``wait_for_service`` method::
         public_port = docker_services.wait_for_service(
             "app",
             8080,
-            check_service=custom_service_checker
+            check_server=custom_service_checker
         )
         url = "http://{docker_services.docker_ip}:{public_port}".format(**locals())
         return url
+
+To use another request path with the default checker the `url_checker` method
+can be used to create a `check_url` method for another path::
+
+    docker_services.wait_for_service(
+        "app",
+        8080,
+        check_server=url_checker('/probe_status'),
+    )
 
 
 Run Tests

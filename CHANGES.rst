@@ -2,8 +2,8 @@
 Changes for Lovely Pytest Docker
 ================================
 
-Unreleased
-==========
+2020/10/06 0.2.0
+================
 
 - added url_checker method to create an url_checker for a specific path
 
