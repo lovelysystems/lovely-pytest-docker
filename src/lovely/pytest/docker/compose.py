@@ -62,9 +62,9 @@ class Services(object):
     https://github.com/AndreLouisCaron/pytest-docker
     """
 
-    def __init__(self, compose_files, docker_ip, project_name='pytest'):
+    def __init__(self, compose_files, docker_ip, project_name='pytest', echo=False):
         self._docker_compose = DockerComposeExecutor(
-            compose_files, project_name
+            compose_files, project_name, echo
         )
         self._services = {}
         self.docker_ip = docker_ip
@@ -150,9 +150,10 @@ class Services(object):
 
 
 class DockerComposeExecutor(object):
-    def __init__(self, compose_files, project_name):
+    def __init__(self, compose_files, project_name, echo=False):
         self._compose_files = compose_files
         self._project_name = project_name
+        self.echo = echo
 
     def execute(self, *subcommand):
         command = ["docker-compose"]
@@ -162,6 +163,10 @@ class DockerComposeExecutor(object):
         command.append('-p')
         command.append(self._project_name)
         command += subcommand
+        
+        if self.echo:
+            print(" ".join(command))
+
         return execute(command)
 
 
@@ -206,10 +211,12 @@ def docker_services(request, docker_compose_files, docker_ip, docker_services_pr
     The services will be stopped after all tests are run.
     """
     keep_alive = request.config.getoption("--keepalive", False)
+    echo = request.config.getoption("--docker-echo", False)
     services = Services(
         docker_compose_files,
         docker_ip,
-        docker_services_project_name
+        docker_services_project_name,
+        echo
     )
     yield services
     if not keep_alive:
@@ -221,5 +228,8 @@ def pytest_addoption(parser):
 
     Add the --keepalive option for pytest.
     """
-    parser.addoption("--keepalive", "-K", action="store_true",
+    group = parser.getgroup("lovely-pytest-docker")
+    group.addoption("--keepalive", "-K", action="store_true",
                      default=False, help="Keep docker containers alive")
+    group.addoption("--docker-echo", action="store_true",
+                     default=False, help="Print commands being run")
