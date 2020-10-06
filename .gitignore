@@ -5,6 +5,7 @@
 *.egg-info
 .DS\_Store
 .cache/
+dist/
 __pycache__/
 .idea/
 *.iml

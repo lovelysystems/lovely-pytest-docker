@@ -3,19 +3,20 @@ import re
 import subprocess
 import time
 import timeit
+import functools
 
 import pytest
 from six.moves.urllib.error import HTTPError
 from six.moves.urllib.request import urlopen
 
 
-def check_url(docker_ip, public_port):
+def check_url(docker_ip, public_port, path='/'):
     """Check if a service is reachable.
 
-    Makes a simple GET request to '/' of the HTTP endpoint. Service is
+    Makes a simple GET request to path of the HTTP endpoint. Service is
     available if returned status code is < 500.
     """
-    url = 'http://{}:{}'.format(docker_ip, public_port)
+    url = 'http://{}:{}{}'.format(docker_ip, public_port, path)
     try:
         r = urlopen(url)
         return r.code < 500
@@ -25,6 +26,12 @@ def check_url(docker_ip, public_port):
     except Exception:
         # Possible service not yet started
         return False
+
+
+def url_checker(path):
+    """Create a check_url method for a specific path
+    """
+    return functools.partial(check_url, path=path)
 
 
 def execute(command, success_codes=(0,)):
