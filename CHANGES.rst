@@ -2,8 +2,8 @@
 Changes for Lovely Pytest Docker
 ================================
 
-unreleased
-==========
+2021/08/05 0.2.1
+================
 
 - explicitly set the project-directory in compose executors to allow older
   compose versions to find ".env" files
