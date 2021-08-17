@@ -7,6 +7,7 @@ readme = open(os.path.join(here, 'README.rst')).read()
 
 requires = [
     'pytest',
+    'six'
 ]
 
 

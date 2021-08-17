@@ -2,6 +2,11 @@
 Changes for Lovely Pytest Docker
 ================================
 
+unreleased
+==========
+
+- added explicit dependency to six, which is no more required in newer pytest versions
+
 2021/08/05 0.2.1
 ================
 
