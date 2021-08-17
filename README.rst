@@ -100,6 +100,18 @@ the ``exec`` method of the ``docker_services`` fixture::
         res = docker_services.execute('crate', 'ls', '-a')
 
 
+Stopping a Docker Container
+=============================
+
+It's possible to stop single Docker containers. Use
+the ``stop`` method of the ``docker_services`` fixture::
+
+    def test_stop(docker_services):
+        # the first argument is the service name of the compose file,
+        # the following arguments build the command to run
+        res = docker_services.stop('crate')
+
+
 Wait for Service
 ================
 
