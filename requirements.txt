@@ -8,4 +8,4 @@ attrs==17.4.0             # via pytest
 pluggy==0.6.0             # via pytest
 py==1.5.2                 # via pytest
 pytest==3.3.2
-six==1.11.0               # via pytest
+six==1.11.0
