@@ -1,4 +1,5 @@
 from six.moves.urllib.request import urlopen
+import time
 
 
 def test_hello_world(docker_hello_world):
@@ -19,6 +20,22 @@ def test_single_container(docker_hello_world, docker_services):
     res = docker_services._docker_compose.execute("ps")
     assert 'hello' in res
     assert 'hello2' not in res
+
+
+def test_stop_single_container(docker_hello_world, docker_hello_world2, docker_services):
+    """Test if only the requested containers are stope.
+
+    The container for hello2 is started by the fixture and stopped via function.
+    """
+    res = docker_services._docker_compose.execute("ps")
+    assert 'hello'  in res
+    assert 'hello2' in res
+    docker_services.stop("hello2")
+    res = docker_services._docker_compose.execute('ps', '--services', '--filter', 'status=running')
+    assert 'hello2' not in res
+    docker_services.start("hello2")
+    res = docker_services._docker_compose.execute('ps', '--services', '--filter', 'status=running')
+    assert 'hello2' in res
 
 
 def test_execute(docker_services):
