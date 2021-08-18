@@ -5,6 +5,7 @@ Changes for Lovely Pytest Docker
 unreleased
 ==========
 
+- allow to set the timeout and retry interval when waiting for services
 - added explicit dependency to six, which is no more required in newer pytest versions
 
 2021/08/05 0.2.1
