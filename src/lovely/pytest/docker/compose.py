@@ -1,11 +1,10 @@
+import functools
 import os
+import pytest
 import re
 import subprocess
 import time
 import timeit
-import functools
-
-import pytest
 from six.moves.urllib.error import HTTPError
 from six.moves.urllib.request import urlopen
 
@@ -84,7 +83,7 @@ class Services(object):
         """
         return self._docker_compose.execute('exec', '-T', service, *cmd)
 
-    def wait_for_service(self, service, private_port, check_server=check_url):
+    def wait_for_service(self, service, private_port, check_server=check_url, timeout=30.0, pause=0.1):
         """
         Waits for the given service to response to a http GET.
 
@@ -93,12 +92,15 @@ class Services(object):
         :param check_server: optional function to check if the server is ready
                              (default check method makes GET request to '/'
                               of HTTP endpoint)
+        :param timeout: maximum time to wait for the service in seconds
+        :param pause: time in seconds to wait between retries
+
         :return: the public port of the service exposed to host system if any
         """
         public_port = self.port_for(service, private_port)
         self.wait_until_responsive(
-            timeout=30.0,
-            pause=0.1,
+            timeout=timeout,
+            pause=pause,
             check=lambda: check_server(self.docker_ip, public_port),
         )
         return public_port
