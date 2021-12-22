@@ -2,8 +2,8 @@
 Changes for Lovely Pytest Docker
 ================================
 
-unreleased
-==========
+2021/12/22 0.3.0
+================
 
 - add support for `docker-compose stop`
 - allow to set the timeout and retry interval when waiting for services
