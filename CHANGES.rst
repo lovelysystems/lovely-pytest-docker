@@ -2,6 +2,11 @@
 Changes for Lovely Pytest Docker
 ================================
 
+unreleased
+==========
+
+- make auto generated project names compatible with docker-compose 2.5
+
 2021/12/22 0.3.0
 ================
 
