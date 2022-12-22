@@ -161,10 +161,19 @@ can be used to create a `check_url` method for another path::
 ## Run Tests
 
 Tests are held in the ``tests`` directory. Running tests is done via the
-pytest package with::
+[pytest](http://doc.pytest.org) package with::
 
 ```shell
     ./gradlew pytest
 ```
 
-.. _Pytest: http://doc.pytest.org
+## Publish a new Version
+
+Use gradle to build and twine to upload like this:
+
+```shell
+    ./gradlew sdist
+    twine upload build/sdist/lovely-pytest-docker-<version>.tar.gz
+```
+
+Note: twine needs to be installed by othher means (e.g. ``pip install twine``)
