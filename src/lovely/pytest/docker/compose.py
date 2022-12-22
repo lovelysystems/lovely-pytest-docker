@@ -207,7 +207,12 @@ def docker_compose_files(pytestconfig):
 
 @pytest.fixture(scope='session')
 def docker_services_project_name(pytestconfig):
-    project_name = "pytest{}".format(str(pytestconfig.rootdir))
+    """
+    Create unique project name for docker compose based on the pytestconfig root directory.
+    Characters prohibited by Docker compose project names are replaced with hyphens.
+    """
+    slug = re.sub(r'[^a-z0-9]+', '-', str(pytestconfig.rootdir).lower())
+    project_name = "pytest{}".format(slug)
     return project_name
 
 
