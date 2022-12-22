@@ -22,6 +22,7 @@ setup(
     version=get_version(),
     description='Pytest testing utilities with docker containers.',
     long_description=readme,
+    long_description_content_type="text/markdown",
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 2.7",
