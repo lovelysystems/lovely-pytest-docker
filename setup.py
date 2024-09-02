@@ -25,7 +25,6 @@ setup(
     long_description_content_type="text/markdown",
     classifiers=[
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 2.7",
     ],
     author='Lovely Systems',
     author_email='office@lovelysystems.com',

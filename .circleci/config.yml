@@ -1,0 +1,51 @@
+version: 2.1
+
+jobs:
+  test:
+    machine:
+      image: ubuntu-2204:2024.02.7
+    environment:
+      TZ: Europe/Zurich
+    steps:
+      - run:
+          name: Install Python 3.11.7
+          command: |
+            pyenv install 3.11.7
+            pyenv global 3.11.7
+      - checkout
+      - restore_cache:
+          name: restore gradle cache
+          key: lovely-pytest-docker-gradle-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "build.gradle.kts" }}
+      - restore_cache:
+          name: restore pip cache
+          key: lovely-pytest-docker-pip-{{ checksum "requirements.txt" }}
+      - run:
+          name: Python version
+          command: python3 --version
+      - run:
+          name: Bootstrap Gradle
+          command: ./gradlew --version
+      - run:
+          name: Python venv + dependencies
+          command: ./gradlew --console=plain dev
+      - save_cache:
+          name: save pip cache
+          # use a key to update cache content
+          key: lovely-pytest-docker-pip-{{ checksum "requirements.txt" }}
+          paths:
+            - "~/.cache/pip"
+      - save_cache:
+          name: save gradle cache
+          key: lovely-pytest-docker-gradle-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "build.gradle.kts" }}
+          paths:
+            - "~/.gradle/caches/"
+            - "~/.gradle/wrapper/"
+      - run:
+          command: ./gradlew test
+
+workflows:
+  test:
+    jobs:
+      - test:
+          context:
+            - github-credentials

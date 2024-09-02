@@ -1,5 +1,20 @@
 # Changes for Lovely Pytest Docker
 
+## 2024-09-02 / 1.0.0
+
+### Feature
+
+- use "docker compose" instead of "docker-compose" to start services
+
+### Breaking
+
+- stop support for Python 2.7
+
+### Development
+
+- update Gradle & Python & dependencies
+- use CircleCI instead of Travis
+
 ## 2022-12-22 / 0.3.1
 
 - make auto generated project names compatible with docker-compose 2.5

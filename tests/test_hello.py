@@ -9,7 +9,7 @@ def test_hello_world(docker_hello_world):
     startup. Do a request to the docker service and read the body.
     """
     res = urlopen(docker_hello_world).read()
-    assert b'<title>HTTP Hello World</title>' in res
+    assert b'<title>The Hello world page</title>' in res
 
 
 def test_single_container(docker_hello_world, docker_services):
@@ -44,7 +44,7 @@ def test_execute(docker_services):
     The exec method executes a command inside a docker command.
     """
     res = docker_services.execute('hello', 'ls', '-a')
-    assert res == '.\n..\nindex.html\n'
+    assert res.startswith('.\n..\n.dockerenv\n')
 
 
 # counter
@@ -62,7 +62,7 @@ def custom_checker(ip_address, port):
 def test_custom_checker(docker_services):
     """Test a custom checker in the wait_for_service method."""
 
-    docker_services.wait_for_service("hello", 80, check_server=custom_checker)
+    docker_services.wait_for_service("hello", 8080, check_server=custom_checker)
     assert custom_checker_called > 1
 
 

@@ -9,7 +9,7 @@ def docker_hello_world(docker_services):
     docker container's service.
     """
     docker_services.start('hello')
-    public_port = docker_services.wait_for_service("hello", 80)
+    public_port = docker_services.wait_for_service("hello", 8080)
     url = "http://{docker_services.docker_ip}:{public_port}".format(**locals())
     return url
 
@@ -22,7 +22,7 @@ def docker_hello_world2(docker_services):
     docker container's service.
     """
     docker_services.start('hello2')
-    public_port = docker_services.wait_for_service("hello2", 80)
+    public_port = docker_services.wait_for_service("hello2", 8080)
     url = "http://{docker_services.docker_ip}:{public_port}".format(**locals())
     return url
 
