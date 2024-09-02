@@ -8,7 +8,12 @@
 
 ### Breaking
 
-- stop support for Pythoon 2.7
+- stop support for Python 2.7
+
+### Development
+
+- update Gradle & Python & dependencies
+- use CircleCI instead of Travis
 
 ## 2022-12-22 / 0.3.1
 
