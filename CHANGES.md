@@ -1,5 +1,15 @@
 # Changes for Lovely Pytest Docker
 
+## 2024-09-02 / 1.0.0
+
+### Feature
+
+- use "docker compose" instead of "docker-compose" to start services
+
+### Breaking
+
+- stop support for Pythoon 2.7
+
 ## 2022-12-22 / 0.3.1
 
 - make auto generated project names compatible with docker-compose 2.5
