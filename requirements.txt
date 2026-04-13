@@ -10,7 +10,7 @@ packaging==24.1
     # via pytest
 pluggy==1.5.0
     # via pytest
-pytest==8.3.2
+pytest==9.0.3
     # via lovely-pytest-docker (setup.py)
 six==1.16.0
     # via lovely-pytest-docker (setup.py)
