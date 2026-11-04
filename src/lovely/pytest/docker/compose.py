@@ -17,7 +17,7 @@ def check_url(docker_ip, public_port, path='/'):
     """
     url = 'http://{}:{}{}'.format(docker_ip, public_port, path)
     try:
-        r = urlopen(url)
+        r = urlopen(url, timeout=5)
         return r.code < 500
     except HTTPError as e:
         # If service returns e.g. a 404 it's ok
